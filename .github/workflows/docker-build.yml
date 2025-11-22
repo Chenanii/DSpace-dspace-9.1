@@ -20,8 +20,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t chenanii/myimage:latest .
+          docker build -t chenanii/dspace-backend:latest .
 
       - name: Push Docker image
         run: |
-          docker push chenanii/myimage:latest
+          docker push chenanii/dspace-backend:latest
