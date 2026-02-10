@@ -13,14 +13,28 @@ ARG DSPACE_VERSION=dspace-9_x
 ARG DOCKER_REGISTRY=docker.io
 
 # Step 1 - Run Maven Build
+# FROM ${DOCKER_REGISTRY}/dspace/dspace-dependencies:${DSPACE_VERSION} AS build
+# ARG TARGET_DIR=dspace-installer
+# WORKDIR /app
+# # The dspace-installer directory will be written to /install
+# RUN mkdir /install \
+#     && chown -Rv dspace: /install \
+#     && chown -Rv dspace: /app
+# USER dspace
+
 FROM ${DOCKER_REGISTRY}/dspace/dspace-dependencies:${DSPACE_VERSION} AS build
 ARG TARGET_DIR=dspace-installer
+
+USER root
 WORKDIR /app
+
 # The dspace-installer directory will be written to /install
-RUN mkdir /install \
-    && chown -Rv dspace: /install \
-    && chown -Rv dspace: /app
+RUN mkdir -p /install \
+    && chown -R dspace:dspace /install \
+    && chown -R dspace:dspace /app
+
 USER dspace
+
 # Copy the DSpace source code (from local machine) into the workdir (excluding .dockerignore contents)
 ADD --chown=dspace . /app/
 # Build DSpace
